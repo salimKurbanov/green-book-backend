@@ -1,0 +1,20 @@
+{
+  "name": "green-book-backend",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun run build.ts"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.2.0",
+    "crypto-js": "^4.2.0",
+    "elysia": "latest",
+    "elysia-ip": "^1.0.8",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}
