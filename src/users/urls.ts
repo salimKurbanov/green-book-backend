@@ -2,8 +2,8 @@ import Elysia, { t } from "elysia";
 import Views from "./views";
 
 const users = new Elysia({prefix: '/api/users'})
-    .post('/init', ({ip, headers}) => Views.init(headers, ip))
-    .post('/signin', ({ip, body}) => Views.signIn(body, ip), {
+    .post('/init', ({server, request, headers}) => Views.init(headers, server?.requestIP(request)?.address))
+    .post('/signin', ({server, request, body}) => Views.signIn(body, server?.requestIP(request)?.address), {
         body: t.Object({
             login: t.String(),
             password: t.String()
