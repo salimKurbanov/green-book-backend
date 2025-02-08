@@ -22,6 +22,34 @@ const createDataBase = async () => {
             active BOOLEAN DEFAULT false
         )`
 
+        await sql`
+        CREATE TABLE IF NOT EXISTS recipes (
+            recipes_id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            time TEXT NOT NULL,
+            image TEXT NOT NULL,
+            portions TEXT NOT NULL,
+            score INT NOT NULL DEFAULT 0,
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP 
+        )`
+
+        await sql`
+        CREATE TABLE IF NOT EXISTS ingredients (
+            ingredients_id SERIAL PRIMARY KEY,
+            item TEXT NOT NULL,
+            value TEXT NOT NULL,
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipes_id) DELETE CASCADE
+        )`
+
+        await sql`
+        CREATE TABLE IF NOT EXISTS steps (
+            steps_id SERIAL PRIMARY KEY,
+            step TEXT NOT NULL,
+            image TEXT NOT NULL,
+            description TEXT NOT NULL,
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipes_id) DELETE CASCADE
+        )`
+
         console.log('database created')
 
     } catch (error) {

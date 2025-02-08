@@ -13,12 +13,10 @@ Views.init = async (headers: any, ip: any) => {
             return {success: false, status: 401, message: 'Токен не действителен'}
         }
 
-        let res = await sql`SELECT * FROM users WHERE userid = ${user.user_id}`
-
-        res = res
+        let res = await sql`SELECT * FROM users WHERE user_id = ${user.user_id}`
 
         if(!res) {
-            return {success: false, status: 401}
+            return {success: false, status: 401, message: 'Пользователя не существует'}
         }
 
         return {success: true, status: 200, data: res}
