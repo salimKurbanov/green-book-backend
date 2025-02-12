@@ -25,7 +25,7 @@ const createDataBase = async () => {
         await sql`
         CREATE TABLE IF NOT EXISTS categories (
             categories_id SERIAL PRIMARY KEY,
-            name TEXT,
+            name TEXT UNIQUE NOT NULL,
             image TEXT
         )`
 
@@ -37,7 +37,7 @@ const createDataBase = async () => {
             image TEXT NOT NULL,
             portions TEXT NOT NULL,
             score INT NOT NULL DEFAULT 0,
-            FOREIGN KEY (category) REFERENCES categories(categories_id),
+            category TEXT NOT NULL,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`
 
@@ -46,7 +46,8 @@ const createDataBase = async () => {
             ingredients_id SERIAL PRIMARY KEY,
             item TEXT NOT NULL,
             value TEXT NOT NULL,
-            FOREIGN KEY (recipe_id) REFERENCES recipes(recipes_id) DELETE CASCADE
+            recipe_id INT NOT NULL,
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipes_id) ON DELETE CASCADE
         )`
 
         await sql`
@@ -55,7 +56,8 @@ const createDataBase = async () => {
             step TEXT NOT NULL,
             image TEXT NOT NULL,
             description TEXT NOT NULL,
-            FOREIGN KEY (recipe_id) REFERENCES recipes(recipes_id) DELETE CASCADE
+            recipe_id INT NOT NULL,
+            FOREIGN KEY (recipe_id) REFERENCES recipes(recipes_id) ON DELETE CASCADE
         )`
 
         console.log('database created')

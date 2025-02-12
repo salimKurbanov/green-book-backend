@@ -6,24 +6,31 @@ const Views: any = {}
 
 Views.allRecipes = async (query: any) => {
     try {
+        let filter = query.filter;
+        let page = query.page ? Number(query.page) : 1;
+        let limit = query.limit ? Number(query.limit) : 8;
+        let offset = (page - 1) * limit;
 
-        let order = query.order
-        let filter = query.filter
-        let page = query.page || 1
-        let limit = query.limit || 10
+        let baseQuery = sql`
+            SELECT * FROM recipes
+            JOIN ingredients ON recipes.recipes_id = ingredients.recipe_id
+            JOIN steps ON recipes.recipes_id = steps.recipe_id
+        `;
 
-        let recipes = await sql`
-            SELECT * FROM recipes 
-            JOIN ingredients ON recipes.recipes_id = ingredients.recipe_id 
-            JOIN steps ON recipes.recipes_id = steps.recipe_id 
-            LIMIT ${limit} OFFSET ${(limit * page) - limit}`
+        if (filter && filter !== 'all') {
+            baseQuery = sql`${baseQuery} WHERE recipes.category = ${filter}`;
+        }
 
-        return {success: true, status: 200, data: recipes}
+        baseQuery = sql`${baseQuery} ORDER BY datetime DESC LIMIT ${limit} OFFSET ${offset}`;
 
-    } catch(e: any) {
-        return {success: false, message: e.message, status: 500}
+        let res = await baseQuery;
+
+        return { success: true, status: 200, data: res };
+    } catch (e: any) {
+        return { success: false, message: e.message, status: 500 };
     }
-}
+};
+
 
 Views.getRandomRecipes = async () => {
     try {

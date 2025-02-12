@@ -3,7 +3,7 @@ import Views from "./views";
 
 const categories = new Elysia({prefix: '/api/categories'})
     .get('/all', () => Views.getCategories())
-    .post('/create', ({body, params, headers, server, request}) => Views.createCategory(body, headers, server?.requestIP(request)?.address), {
+    .post('/create', ({body, headers, server, request}) => Views.createCategory(body, headers, server?.requestIP(request)?.address), {
         body: t.Object({
             name: t.String(),
             file: t.Files()
