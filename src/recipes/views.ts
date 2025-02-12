@@ -47,7 +47,7 @@ Views.createRecipe = async (body: any) => {
         let recipesImage = crypto.randomUUID()
         await upload.image(recipesImage, recipes.file, 'recipes')
 
-        let newRecipes = await sql`INSERT INTO recipes (title, time, image, portions) VALUES (${recipes.title}, ${recipes.time}, ${recipesImage}, ${recipes.portions}) RETURNING *`
+        let newRecipes = await sql`INSERT INTO recipes (title, time, image, portions, category) VALUES (${recipes.title}, ${recipes.time}, ${recipesImage}, ${recipes.portions}, ${recipes.category}) RETURNING *`
         
         //Create ingredients
         if(ingredients?.length > 0) {
@@ -99,7 +99,8 @@ Views.updateRecipe = async (id: any, body: any, headers: any, ip: any) => {
             title = ${recipes.title}, 
             time = ${recipes.time}, 
             image = ${recipes.image}, 
-            portions = ${recipes.portions} 
+            portions = ${recipes.portions},
+            category = ${recipes.category}
             WHERE recipes_id = ${id}
             RETURNING *`
 

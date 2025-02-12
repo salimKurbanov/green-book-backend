@@ -23,6 +23,13 @@ const createDataBase = async () => {
         )`
 
         await sql`
+        CREATE TABLE IF NOT EXISTS categories (
+            categories_id SERIAL PRIMARY KEY,
+            name TEXT,
+            image TEXT
+        )`
+
+        await sql`
         CREATE TABLE IF NOT EXISTS recipes (
             recipes_id SERIAL PRIMARY KEY,
             title TEXT NOT NULL,
@@ -30,7 +37,8 @@ const createDataBase = async () => {
             image TEXT NOT NULL,
             portions TEXT NOT NULL,
             score INT NOT NULL DEFAULT 0,
-            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP 
+            FOREIGN KEY (category) REFERENCES categories(categories_id),
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`
 
         await sql`

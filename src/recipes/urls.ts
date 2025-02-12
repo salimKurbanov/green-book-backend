@@ -10,7 +10,8 @@ const recipes = new Elysia({prefix: '/api/recipes'})
                 title: t.String(),
                 time: t.String(),
                 file: t.Files(),
-                portions: t.String()
+                portions: t.String(),
+                category: t.String()
             }), 
             ingredients: t.Array(t.Object({
                 item: t.String(),
@@ -33,6 +34,7 @@ const recipes = new Elysia({prefix: '/api/recipes'})
                 time: t.String(),
                 image: t.String(),
                 portions: t.String(),
+                category: t.String(),
                 file: t.Files()
             }), 
             ingredients: t.Array(t.Object({
