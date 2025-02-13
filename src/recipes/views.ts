@@ -1,6 +1,7 @@
 import sql from "../db"
 import jwt from "../jwt"
 import upload from "../upload"
+import recipes from "./urls";
 
 const Views: any = {}
 
@@ -13,9 +14,13 @@ Views.allRecipes = async (query: any) => {
 
         let baseQuery = sql`
             SELECT * FROM recipes
-            JOIN ingredients ON recipes.recipes_id = ingredients.recipe_id
-            JOIN steps ON recipes.recipes_id = steps.recipe_id
         `;
+        // let baseQuery = sql`
+        //     SELECT * FROM recipes
+        //     JOIN ingredients ON recipes.recipes_id = ingredients.recipe_id
+        //     JOIN steps ON recipes.recipes_id = steps.recipe_id
+        // `;
+
 
         if (filter && filter !== 'all') {
             baseQuery = sql`${baseQuery} WHERE recipes.category = ${filter}`;
@@ -25,7 +30,7 @@ Views.allRecipes = async (query: any) => {
 
         let res = await baseQuery;
 
-        return { success: true, status: 200, data: res };
+        return { success: true, status: 200, data: {recipes: res, length: 20} };
     } catch (e: any) {
         return { success: false, message: e.message, status: 500 };
     }

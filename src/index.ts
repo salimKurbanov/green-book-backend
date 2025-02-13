@@ -22,6 +22,7 @@ const app = new Elysia()
           return 'error'
       }
   }) 
+  .get('/images/:folder/:name', ({params: {folder, name}}) => upload.getImage(name, folder))
   .listen(4000);
 
 console.log(`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`);
